@@ -1,0 +1,84 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  OUTPUT_FOLDER: "./output"
+  FILENAME: "library"
+
+jobs:
+  pack-library:
+    env:
+      OUTPUT_FOLDER: "./output"
+      FILENAME: "library"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository for deployment
+        uses: actions/checkout@v5
+
+      - name: Prepare library package
+        run: |
+          mkdir -p ./${{ env.OUTPUT_FOLDER }}/utils/crc
+          cp ./crc16.c ./${{ env.OUTPUT_FOLDER }}/utils/crc/
+          cp ./crc16.h ./${{ env.OUTPUT_FOLDER }}/utils/crc/
+
+      - name: Upload library package
+        uses: actions/upload-artifact@v4
+        with:
+            name: library-package
+            path: ${{ env.OUTPUT_FOLDER }}
+            retention-days: 1
+
+  create-release:
+    needs: [pack-library]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+            Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Download Library Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: library-package
+        path: ./artifact/${{ env.FILENAME }}
+    - name: Display structure
+      run: ls -R ./artifact/${{ env.FILENAME }}
+    - name: Create Compressed File
+      run: |
+        cd ./artifact
+        tar -czvf ./${{ env.FILENAME }}.tar.gz ./${{ env.FILENAME }}
+        zip -r ./${{ env.FILENAME }}.zip ./${{ env.FILENAME }}
+        cd ..
+    
+    - name: Upload Build Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./artifact/${{ env.FILENAME }}.tar.gz
+        asset_name: ${{ env.FILENAME }}.tar.gz
+        asset_content_type: application/gzip
+    
+    - name: Upload Build Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./artifact/${{ env.FILENAME }}.zip
+        asset_name: ${{ env.FILENAME }}.zip
+        asset_content_type: application/zip
