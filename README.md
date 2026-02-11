@@ -27,7 +27,7 @@ The library can be downloaded (`zip` or `tar`), cloned or used as submodule in a
 
 ### Using with `git clone`
 
-``` bash
+```sh
 mkdir -p ./utils/
 git clone https://github.com/0x007E/utils-crc.git ./utils
 mv ./utils/utils-crc ./utils/crc
@@ -35,13 +35,13 @@ mv ./utils/utils-crc ./utils/crc
 
 ### Using as `git submodule`
 
-``` bash
+```sh
 git submodule add https://github.com/0x007E/utils-crc.git ./utils/crc
 ```
 
 ## Programming
 
-``` c
+```c
 #include "../lib/utils/crc/crc16.h"
 
 int main(void)
