@@ -15,7 +15,7 @@
  * 
  * @note This file is part of a larger utility library and subject to the license specified in the repository. For updates and the complete revision history, see the GitHub repository.
  * 
- * @see https://github.com/0x007e/util-crc "CRC GitHub Repository"
+ * @see https://github.com/0x007e/utils-crc "CRC GitHub Repository"
  */
 
 #ifndef CRC16_H_
