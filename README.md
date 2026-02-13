@@ -2,6 +2,8 @@
 
 # `CRC Utils`
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/0x007E/utils-crc)
+
 This utility can be used to calculate a `crc-checksum` across given data.
 
 ## File Structure
