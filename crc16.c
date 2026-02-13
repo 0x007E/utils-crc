@@ -1,3 +1,21 @@
+/**
+ * @file crc16.c
+ * @brief Implements the CRC16 utility functions.
+ *
+ * @details
+ * This file provides the implementation of the CRC16 utility functions declared in crc16.h. It manages a software-based CRC16 calculation, supporting configurable initial values and polynomials.
+ *
+ * @author g.raf
+ * @date 2026-01-25
+ * @version 1.0 Release
+ * @copyright
+ * Copyright (c) 2026 g.raf
+ * Released under the GPLv3 License. (see LICENSE in repository)
+ *
+ * @note This file is part of a larger project and subject to the license specified in the repository. For updates and the complete revision history, see the GitHub repository.
+ *
+ * @see https://github.com/0x007e/utils-crc "CRC GitHub Repository"
+ */
 
 #include "crc16.h"
 
